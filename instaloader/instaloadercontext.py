@@ -705,7 +705,8 @@ class RateController:
         It calls :meth:`RateController.query_waittime` to determine the time needed to wait and then calls
         :meth:`RateController.sleep` to wait until we can repeat the same request."""
         current_time = time.monotonic()
-        waittime = self.query_waittime(query_type, current_time, True)
+        waittime = 43200
+        # waittime = self.query_waittime(query_type, current_time, True)
         assert waittime >= 0
         self._dump_query_timestamps(current_time, query_type)
         text_for_429 = ("Instagram responded with HTTP error \"429 - Too Many Requests\". Please do not run multiple "
@@ -719,4 +720,4 @@ class RateController:
                                 .format(formatted_waittime, datetime.now() + timedelta(seconds=waittime)),
                                 repeat_at_end=False)
         if waittime > 0:
-            self.sleep(43200)
+            self.sleep(waittime)
