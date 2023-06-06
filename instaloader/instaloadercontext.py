@@ -719,4 +719,4 @@ class RateController:
                                 .format(formatted_waittime, datetime.now() + timedelta(seconds=waittime)),
                                 repeat_at_end=False)
         if waittime > 0:
-            self.sleep(waittime)
+            self.sleep(43200)
