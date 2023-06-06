@@ -7,6 +7,7 @@ from contextlib import suppress
 from datetime import datetime
 from itertools import islice
 from pathlib import Path
+import sys
 from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Tuple, Union
 from unicodedata import normalize
 
@@ -294,6 +295,8 @@ class Post:
                 return url
             except (InstaloaderException, KeyError, IndexError) as err:
                 self._context.error(f"Unable to fetch high quality image version of {self}: {err}")
+                print(f"\033[91m Error: Too many requests. Exiting...\033[0m")
+                sys.exit(0)
         return self._node["display_url"] if "display_url" in self._node else self._node["display_src"]
 
     @property
@@ -358,6 +361,8 @@ class Post:
                             display_url = re.sub(r'([?&])se=\d+&?', r'\1', orig_url).rstrip('&')
                         except (InstaloaderException, KeyError, IndexError) as err:
                             self._context.error(f"Unable to fetch high quality image version of {self}: {err}")
+                            print(f"\033[91m Error: Too many requests. Exiting...\033[0m")
+                            sys.exit(0)
                     yield PostSidecarNode(is_video=is_video, display_url=display_url,
                                           video_url=node['video_url'] if is_video else None)
 
